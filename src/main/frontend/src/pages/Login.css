@@ -1,0 +1,81 @@
+/* .login-container는 로그인 컨테이너의 스타일을 정의합니다. */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3); /* 배경 그라데이션 설정 */
+    color: #FFFFFF; /* 글자 색상 설정 */
+    font-family: 'Helvetica Neue', sans-serif; /* 글꼴 설정 */
+}
+
+/* .login-container header는 로그인 컨테이너 내의 헤더 스타일을 정의합니다. */
+.login-container header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* .login-container form은 로그인 폼 스타일을 정의합니다. */
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+/* .login-container form input은 입력 필드 스타일을 정의합니다. */
+.login-container form input {
+    padding: 10px;
+    border: 2px solid #FFFFFF;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #FFFFFF;
+}
+
+/* .login-container form button은 로그인 버튼 스타일을 정의합니다. */
+.login-container form button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    color: #6e8efb;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* .login-container form button:hover은 버튼에 호버 효과를 정의합니다. */
+.login-container form button:hover {
+    background-color: #ddd;
+}
+
+/* .oauth-buttons-container는 OAuth2 로그인 버튼 컨테이너 스타일을 정의합니다. */
+.oauth-buttons-container {
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Add specific styles for your OAuth2 buttons here if needed */
+/* OAuth2 버튼에 특정 스타일을 추가하려면 여기에 추가하세요. */
+
+/* Brand colors for OAuth buttons */
+/* OAuth 버튼의 브랜드 색상을 정의합니다. */
+.oauth-button.google { background-color: #FF5722; color: white; } /* 구글 */
+.oauth-button.facebook { background-color: #1877f2; color: white; } /* 메타 */
+.oauth-button.kakao { background-color: #FFD300; color: #000; } /* 카카오 */
+.oauth-button.naver { background-color: #1EC800; color: white; } /* 네이버 */
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 30px; /* 모바일에서 패딩 감소 */
+        width: 90%; /* 모바일에서 너비 감소 */
+    }
+
+    .login-title {
+        font-size: 2rem; /* 모바일에서 제목 크기 감소 */
+    }
+}

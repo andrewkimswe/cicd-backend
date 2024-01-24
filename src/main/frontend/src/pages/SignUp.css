@@ -1,0 +1,47 @@
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3); /* 배경 그라데이션 설정 */
+    color: #FFFFFF; /* 글자 색상 설정 */
+    font-family: 'Helvetica Neue', sans-serif; /* 글꼴 설정 */
+}
+
+.signup-container header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.signup-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.signup-container form input {
+    padding: 10px;
+    border: 2px solid #FFFFFF;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #FFFFFF;
+}
+
+.signup-container form button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    color: #6e8efb;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.signup-container form button:hover {
+    background-color: #ddd;
+}
