@@ -1,11 +1,11 @@
 package board.demo.controller;
 
-import com.github.andrewkimswe.chat.dto.AuthResponse;
-import com.github.andrewkimswe.chat.dto.LoginRequest;
-import com.github.andrewkimswe.chat.dto.RegisterRequest;
-import com.github.andrewkimswe.chat.model.user.UserJpaEntity;
-import com.github.andrewkimswe.chat.service.UserService;
-import com.github.andrewkimswe.chat.util.JwtUtil;
+import board.demo.dto.AuthResponse;
+import board.demo.dto.LoginRequest;
+import board.demo.dto.RegisterRequest;
+import board.demo.model.user.UserJpaEntity;
+import board.demo.service.UserService;
+import board.demo.util.JwtUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

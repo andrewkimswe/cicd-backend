@@ -20,6 +20,8 @@ public class UserJpaEntity {
     private String password; // Added for storing the hashed password
     private LocalDateTime createdAt;
     private String socialId;
+    private boolean emailVerified;
+    private String emailVerificationToken;
 
     @Enumerated(EnumType.STRING)
     private SocialType provider;

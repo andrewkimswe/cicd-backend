@@ -1,7 +1,7 @@
 package board.demo.repository;
 
-import com.github.andrewkimswe.chat.model.user.SocialType;
-import com.github.andrewkimswe.chat.model.user.UserJpaEntity;
+import board.demo.model.user.SocialType;
+import board.demo.model.user.UserJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
@@ -20,4 +20,7 @@ public interface UserJpaRepository extends JpaRepository<UserJpaEntity, Long> {
 
     // Check if a user exists with a given email
     boolean existsByEmail(String email);
+
+    Optional<UserJpaEntity> findByEmailVerificationToken(String token);
+
 }

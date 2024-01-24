@@ -1,6 +1,6 @@
 package board.demo.security;
 
-import com.github.andrewkimswe.chat.util.JwtUtil;
+import board.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -19,8 +19,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // Google Auth Library
+	implementation 'com.google.auth:google-auth-library-oauth2-http:0.25.2'
+
+	// JavaMail API
+	implementation 'jakarta.mail:jakarta.mail-api:2.0.0'
+	implementation 'com.sun.mail:jakarta.mail:2.0.0'
+
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'

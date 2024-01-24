@@ -1,8 +1,8 @@
 package board.demo.security.oauth;
 
-import com.github.andrewkimswe.chat.model.user.Role;
-import com.github.andrewkimswe.chat.model.user.SocialType;
-import com.github.andrewkimswe.chat.model.user.UserJpaEntity;
+import board.demo.model.user.Role;
+import board.demo.model.user.SocialType;
+import board.demo.model.user.UserJpaEntity;
 import lombok.Data;
 
 import java.util.Map;

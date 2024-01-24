@@ -1,6 +1,6 @@
 package board.demo.security.oauth;
 
-import com.github.andrewkimswe.chat.model.user.SocialType;
+import board.demo.model.user.SocialType;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;

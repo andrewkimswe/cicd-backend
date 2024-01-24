@@ -1,6 +1,6 @@
 package board.demo.repository;
 
-import com.github.andrewkimswe.chat.model.Post;
+import board.demo.model.Post;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

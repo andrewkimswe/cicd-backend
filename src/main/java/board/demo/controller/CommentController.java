@@ -1,9 +1,8 @@
 package board.demo.controller;
 
-import com.github.andrewkimswe.chat.model.Comment;
-import com.github.andrewkimswe.chat.service.CommentService;
+import board.demo.model.Comment;
+import board.demo.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

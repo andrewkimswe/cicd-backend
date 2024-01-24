@@ -1,10 +1,12 @@
 package board.demo.service;
 
-import com.github.andrewkimswe.chat.dto.RegisterRequest;
-import com.github.andrewkimswe.chat.model.user.Role;
-import com.github.andrewkimswe.chat.model.user.UserJpaEntity;
-import com.github.andrewkimswe.chat.repository.UserJpaRepository;
+import board.demo.dto.RegisterRequest;
+import board.demo.model.user.Role;
+import board.demo.model.user.UserJpaEntity;
+import board.demo.repository.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,10 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -26,7 +25,14 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MailService mailService; // MailService를 주입합니다.
+
     public UserJpaEntity registerUser(RegisterRequest registerRequest) {
+        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("이미 사용중인 메일입니다");
+        }
+        String verificationToken = UUID.randomUUID().toString(); // 인증 토큰 생성
         UserJpaEntity newUser = new UserJpaEntity();
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
@@ -34,7 +40,18 @@ public class UserService implements UserDetailsService {
         newUser.setRole(Collections.singleton(Role.USER)); // Default role
         // You can add more fields to be set from RegisterRequest as needed
 
-        return userRepository.save(newUser);
+        UserJpaEntity savedUser = userRepository.save(newUser);
+
+        sendVerificationEmail(newUser.getEmail(), verificationToken); // 인증 이메일 발송
+        return savedUser;
+    }
+
+    private void sendVerificationEmail(String email, String verificationToken) {
+        String verificationUrl = "http://yourdomain.com/verify?token=" + verificationToken;
+        String subject = "이메일 인증";
+        String text = "이메일 인증을 위해 다음 링크를 클릭해주세요: " + verificationUrl;
+
+        mailService.sendEmail(email, subject, text); // MailService의 메서드를 사용하여 이메일을 발송합니다.
     }
 
     public Optional<UserJpaEntity> getUserById(Long id) {

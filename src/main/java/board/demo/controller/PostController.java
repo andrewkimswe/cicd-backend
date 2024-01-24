@@ -1,7 +1,7 @@
 package board.demo.controller;
 
-import com.github.andrewkimswe.chat.model.Post;
-import com.github.andrewkimswe.chat.service.PostService;
+import board.demo.model.Post;
+import board.demo.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

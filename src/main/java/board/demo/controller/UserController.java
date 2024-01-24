@@ -1,7 +1,7 @@
 package board.demo.controller;
 
-import com.github.andrewkimswe.chat.model.user.UserJpaEntity;
-import com.github.andrewkimswe.chat.service.UserService;
+import board.demo.model.user.UserJpaEntity;
+import board.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

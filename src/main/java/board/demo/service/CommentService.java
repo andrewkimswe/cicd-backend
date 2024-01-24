@@ -1,7 +1,7 @@
 package board.demo.service;
 
-import com.github.andrewkimswe.chat.model.Comment;
-import com.github.andrewkimswe.chat.repository.CommentRepository;
+import board.demo.model.Comment;
+import board.demo.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
