@@ -1,4 +1,4 @@
-/* PostDetail.css */
+/* General styling for the post detail container */
 .post-detail-container {
     margin: 20px auto;
     padding: 20px;
@@ -10,22 +10,21 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.post-title, .post-content {
+    color: #ffffff;
+}
+
 .post-title {
-    font-size: 28px; /* 글 제목 폰트 크기 증가 */
-    margin-bottom: 15px; /* 여백 증가 */
-    color: #ffffff; /* 글 제목 색상 변경 */
+    font-size: 28px;
+    margin-bottom: 15px;
 }
 
 .post-content {
-    margin-bottom: 30px; /* 여백 증가 */
-    font-size: 18px; /* 글 내용 폰트 크기 변경 */
-    color: #ffffff; /* 글 내용 색상 변경 */
+    margin-bottom: 30px;
+    font-size: 18px;
 }
 
-.post-actions {
-    margin-bottom: 20px;
-}
-
+/* Styling for buttons */
 .button-container {
     display: flex;
     justify-content: space-between;
@@ -33,128 +32,141 @@
 }
 
 .button-container button {
-    background-color: #007bff; /* 버튼 배경색 변경 */
-    color: #fff; /* 버튼 텍스트 색상 변경 */
-    border: none; /* 버튼 테두리 제거 */
-    padding: 10px 20px; /* 여백 조정 */
-    border-radius: 5px; /* 버튼 모서리를 둥글게 만듭니다. */
-    cursor: pointer; /* 커서 스타일 변경 */
-    transition: background-color 0.2s ease; /* 부드러운 배경색 전환 애니메이션 추가 */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .button-container button:hover {
-    background-color: #0056b3; /* 버튼 호버 상태일 때 배경색 변경 */
+    background-color: #0056b3;
 }
 
+/* Styling for the comment section */
 .comment-item {
     background-color: #fff;
     margin-bottom: 10px;
-    padding: 15px; /* Reduced padding for a slimmer look */
+    padding: 15px;
     border: 1px solid #eee;
     border-radius: 4px;
-    display: flex; /* Using flex to align content and buttons */
-    justify-content: space-between; /* Space between content and buttons */
-    align-items: center; /* Align items vertically */
+    position: relative;
 }
 
 .comment-content {
-    flex-grow: 1; /* Content takes up the available space */
-    margin-right: 10px; /* Space between content and buttons */
+    margin-bottom: 10px;
 }
 
-.comment-buttons {
-    display: flex; /* Align buttons horizontally */
-    align-items: center;
+.comment-actions {
+    display: flex;
     gap: 10px;
 }
 
-.comment-buttons button {
-    background-color: #4CAF50; /* Styling for buttons */
+.comment-actions button {
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 5px 10px; /* Smaller padding for buttons */
-    margin-left: 5px; /* Space between buttons */
+    padding: 5px 10px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s;
 }
 
-.comment-buttons button.edit {
-    background-color: #ffca28; /* Golden color for edit button */
+.comment-actions button.edit {
+    background-color: #ffca28;
     color: #333;
 }
 
-.comment-buttons button.delete {
-    background-color: #f44336; /* Red color for delete button */
-    color: white;
-}
-
-.comment-buttons button:hover {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.comment-buttons button.dislike {
+.comment-actions button.delete {
     background-color: #f44336;
 }
 
-/* PostDetail.css */
-.post-container {
-    background-color: #ffffff; /* 글 컨테이너 배경색 */
-    padding: 20px; /* 글 컨테이너 내부 여백 */
-    border: 1px solid #ddd; /* 글 컨테이너 테두리 추가 */
-    border-radius: 5px; /* 글 컨테이너 모서리를 둥글게 만듭니다. */
-    margin-bottom: 20px; /* 글 컨테이너 간격 늘리기 */
+.comment-actions button:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.comment-container {
-    background-color: #ffffff; /* 댓글 컨테이너 배경색 */
-    padding: 20px; /* 댓글 컨테이너 내부 여백 */
-    border: 1px solid #ddd; /* 댓글 컨테이너 테두리 추가 */
-    border-radius: 5px; /* 댓글 컨테이너 모서리를 둥글게 만듭니다. */
-    margin-bottom: 20px; /* 댓글 컨테이너 간격 늘리기 */
-    margin-top: 30px; /* 댓글 컨테이너 상단 여백 추가 */
-}
-
-.new-comment-container {
-    width: 100%; /* Set container width to take full available width */
-    display: flex;
-    flex-direction: column;
-    align-items: stretch; /* Ensure children stretch to fill the container */
-}
-
-.new-comment-container textarea {
-    width: calc(100% - 30px); /* Adjust width to match the width of comment items, accounting for padding */
-    margin: 0 auto; /* Center the textarea */
-    padding: 15px;
-    font-size: 1rem;
-    border: 1px solid #ddd;
+/* Styling for the reply section */
+.reply-item {
+    background-color: #f8f9fa;
+    padding: 10px;
     border-radius: 5px;
-    height: 60px; /* Adjust height as needed */
+    margin-bottom: 10px;
+    margin-left: 30px;
+    border-left: 3px solid #4CAF50;
 }
 
-.new-comment-container button {
-    width: auto; /* Auto width for the button */
-    padding: 10px 20px;
-    margin-top: 10px; /* Space above the button */
-    align-self: center; /* Center the button */
+.reply-content p {
+    font-size: 0.9rem;
 }
 
-
-.new-comment-container button:hover {
-    background-color: #4a8bc2;
+.reply-actions {
+    text-align: right;
 }
 
-.like-button {
-    background-color: #008CBA; /* Example color */
+.reply-actions button {
+    background-color: #007bff;
+    color: white;
+    margin-left: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.reply-actions button:hover {
+    background-color: #0056b3;
+}
+
+/* Styling for new comment and reply forms */
+.new-comment-container, .reply-form {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.submit-button {
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 15px;
-    margin: 10px 0;
+    padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s;
 }
 
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+/* Styling for attachment display */
+.attachment {
+    max-width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.like-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
 .like-button:hover {
-    background-color: #005f73; /* Darker shade for hover */
+    background-color: #45a049;
 }

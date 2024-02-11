@@ -17,12 +17,13 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-
     @Value("${jwt.secret}")
     private String SECRET_KEY;
+
     private static long expiration = 3600000;
 
     private SecretKey key;
+
 
     @PostConstruct
     public void init() {
@@ -33,6 +34,7 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     }
 
+
     public String generateToken(String subject) {
         return Jwts.builder()
                 .setSubject(subject)
@@ -42,28 +44,33 @@ public class JwtUtil {
                 .compact();
     }
 
+
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Add a setter for the expiration time for testing purposes
+
     public void setExpiration(long expirationTimeMillis) {
         expiration = expirationTimeMillis;
     }
+
 
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
+
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
 
     private Claims extractAllClaims(String token) {
         Jws<Claims> jws = Jwts.parserBuilder()
@@ -72,6 +79,7 @@ public class JwtUtil {
                 .parseClaimsJws(token);
         return jws.getBody();
     }
+
 
     public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());

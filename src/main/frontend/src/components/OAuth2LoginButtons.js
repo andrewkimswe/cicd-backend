@@ -2,7 +2,6 @@ import React from 'react';
 import './OAuth2LoginButtons.css';
 
 function OAuth2LoginButtons() {
-    // OAuth2 로그인 플로우로 리다이렉션을 처리하는 함수입니다.
     const handleOAuthLogin = (providerUrl) => {
         window.location.href = providerUrl; // 클릭된 버튼에 해당하는 OAuth2 공급자의 URL로 리다이렉션합니다.
     };

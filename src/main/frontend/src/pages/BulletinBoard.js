@@ -5,37 +5,34 @@ import { useNavigate } from 'react-router-dom';
 
 function BulletinBoard() {
     const navigate = useNavigate();
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
+    const [posts, setPosts] = useState([]); // 게시물 목록 상태
+    const [loading, setLoading] = useState(false); // 로딩 상태
+    const [error, setError] = useState(null); // 오류 상태
+    const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+    const [filter, setFilter] = useState('all'); // 게시물 필터링 상태
     const postsPerPage = 10; // 한 페이지에 표시할 게시물 수
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
-    const paginate = pageNumber => setCurrentPage(pageNumber);
+    const paginate = pageNumber => setCurrentPage(pageNumber); // 페이지네이션 함수
 
 
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/posts')
-            .then(response => {
-                if (Array.isArray(response.data)) {
-                    setPosts(response.data);
-                } else {
-                    throw new Error('Data is not an array');
-                }
-            })
-            .catch(err => {
-                setError(`Error fetching posts: ${err.message}`);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, []);
+        // URL에서 jwt 파라미터를 가져와서 로컬 스토리지에 저장하고 '/posts' 페이지로 리다이렉션합니다.
+        const urlParams = new URLSearchParams(window.location.search);
+        const jwt = urlParams.get('jwt');
+
+        if (jwt) {
+            localStorage.setItem('JWT_TOKEN', jwt);
+
+            // Redirect to the posts page
+            navigate('/posts');
+        }
+    }, [navigate]);
 
     const handleLogout = () => {
         axios.post('http://localhost:8080/api/logout')
@@ -63,6 +60,21 @@ function BulletinBoard() {
             });
     };
 
+    const fetchFilteredPosts = (filterType) => {
+        setLoading(true);
+        axios.get(`http://localhost:8080/api/posts?filter=${filterType}`)
+            .then(response => {
+                setPosts(response.data);
+                setCurrentPage(1);
+            })
+            .catch(err => {
+                setError(`Error fetching posts: ${err.message}`);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+        setFilter(filterType);
+    };
 
 
     const goToCreatePost = () => {
@@ -76,7 +88,12 @@ function BulletinBoard() {
                 <button className="logout-button" onClick={handleLogout}>Logout</button>
                 <button className="create-post-button" onClick={goToCreatePost}>글쓰기</button>
             </header>
-            <h1 className="board-title">Nefer</h1>
+            <h1 className="board-title">Name</h1>
+            <div className="filter-bar">
+                <button className={`filter-button ${filter === 'all' ? 'active' : ''}`} onClick={() => fetchFilteredPosts('all')}>전체글</button>
+                <button className={`filter-button ${filter === 'popular' ? 'active' : ''}`} onClick={() => fetchFilteredPosts('popular')}>인기글</button>
+                <button className={`filter-button ${filter === 'notices' ? 'active' : ''}`} onClick={() => fetchFilteredPosts('notices')}>공지글</button>
+            </div>
             {loading ? (
                 <div>Loading...</div>
             ) : error ? (

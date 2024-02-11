@@ -96,3 +96,39 @@ button[type="submit"]:hover {
 .edit-post-container {
     padding-top: 20px; /* 상단 패딩을 20px로 변경 */
 }
+
+/* 파일 업로드 버튼 스타일 */
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #3498db; /* 배경색 변경 */
+    color: white;
+    border: none;
+    border-radius: 6px; /* 모서리를 더 둥글게 만듭니다. */
+    cursor: pointer;
+    font-size: 1rem; /* 폰트 크기 변경 */
+    transition: background 0.3s ease; /* 부드러운 배경색 전환 애니메이션 추가 */
+}
+
+.custom-file-upload:hover {
+    background: #2980b9; /* 호버 상태 배경색 변경 */
+}
+
+.submit-button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-button:hover {
+    background: #2980b9;
+}
+
+/* Style adjustments for icons if you use FontAwesome or similar */
+.fa {
+    margin-right: 8px;
+}

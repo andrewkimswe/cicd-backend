@@ -8,8 +8,8 @@ function Home() {
 
     return (
         <div className="home-container">
-            <h2>Welcome to Nefer</h2>
-            <p>Guitar Club of Hongik University</p>
+            <h2>Welcome to Name</h2>
+            <p>Club of Hongik University</p>
             <div className="action-buttons">
                 {/* Button 컴포넌트를 사용하여 로그인 버튼을 렌더링하고, 클릭 시 '/login' 경로로 이동합니다. */}
                 <Button onClick={() => navigate('/login')} label="Log in" />

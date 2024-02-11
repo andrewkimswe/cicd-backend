@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import OAuth2LoginButtons from '../components/OAuth2LoginButtons';
 import './Login.css';
+import OAuth2LoginButtons from '../components/OAuth2LoginButtons';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -10,16 +11,43 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8080/api/login', {
+                username,
+                password
+            }, {
+                withCredentials: true
+            });
 
-        // 특정 닉네임(admin)과 비밀번호(0000)로 로그인을 시도합니다.
-        if (username === 'admin' && password === '0000') {
-            // 로그인 성공 시 '/admin' 페이지로 이동합니다.
-            navigate('/posts');
-        } else {
-            // 로그인 실패 시 에러 처리 로직을 추가할 수 있습니다.
-            console.error('Login failed');
+            if (response.status === 200) {
+                const { token, role } = response.data;
+
+                localStorage.setItem('token', token);
+
+                // role 정보를 배열로 변환하고, 추가적인 대괄호를 제거
+                let roles = role;
+                if (!Array.isArray(role)) {
+                    roles = role.replace(/^\[|\]$/g, '').split(','); // 대괄호를 제거하고, 문자열을 배열로 변환
+                }
+
+                // roles 배열에서 공백 제거 및 대문자 변환
+                roles = roles.map(r => r.trim().toUpperCase());
+
+                if (roles.includes("ADMIN")) {
+                    navigate('/admin');
+                } else {
+                    navigate('/posts');
+                }
+            } else {
+                alert('Login failed');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('An error occurred during login');
         }
     };
+
+
 
     return (
         <div className="login-container">
@@ -44,9 +72,8 @@ function Login() {
                     />
                     <button type="submit">Login</button>
                 </form>
-                <p>
-                    Don't have an account? <Link to="/signup">Sign Up</Link>
-                </p>
+                <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
+                <p><Link to="/forgot-password">Forgot Password?</Link></p>
                 <OAuth2LoginButtons />
             </main>
         </div>

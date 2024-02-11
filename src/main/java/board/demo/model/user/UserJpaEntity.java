@@ -30,6 +30,12 @@ public class UserJpaEntity {
     @Enumerated(EnumType.STRING)
     private Set<Role> role;
 
+    private Integer loginAttempts = 0; // 로그인 시도 횟수
+    private LocalDateTime lockUntil; // 계정 잠금 시간
+
+    private String passwordResetToken;
+    private LocalDateTime passwordResetTokenExpiry;
+
     // Constructor for OAuth users (without password)
     public UserJpaEntity(String email, SocialType provider, Set<Role> role) {
         this.email = email;

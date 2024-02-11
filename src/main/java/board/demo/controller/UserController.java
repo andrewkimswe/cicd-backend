@@ -1,15 +1,17 @@
 package board.demo.controller;
 
+import board.demo.model.user.Role;
 import board.demo.model.user.UserJpaEntity;
 import board.demo.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,19 +24,6 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    // OAuth2 로그인 성공 시 호출되는 엔드포인트
-    @GetMapping("/loginSuccess")
-    public ResponseEntity<?> loginSuccess(OAuth2AuthenticationToken token) {
-        String provider = token.getAuthorizedClientRegistrationId();
-        String email = token.getPrincipal().getAttribute("email");
-        String name = token.getPrincipal().getAttribute("name");
-
-        // Convert provider to String and role to Set<String>
-        UserJpaEntity userJpa = userService.createOrUpdateUser(email, provider, Set.of("USER"));
-
-        return new ResponseEntity<>(userJpa, HttpStatus.OK);
     }
 
 
@@ -80,4 +69,39 @@ public class UserController {
         UserJpaEntity updatedUser = userService.updateUserProfile(id, userRequest.getEmail());
         return ResponseEntity.ok(updatedUser);
     }
+
+    @PutMapping("/{id}/role")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<UserJpaEntity> updateUserRole(@PathVariable Long id, @RequestParam("role") Role role) {
+        UserJpaEntity updatedUser = userService.updateRole(id, role);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PostMapping("/unlock-account")
+    public ResponseEntity<?> unlockAccount(@RequestParam("token") String token) {
+        if (userService.unlockAccount(token)) {
+            return ResponseEntity.ok("계정이 잠금 해제되었습니다.");
+        }
+        return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+    }
+
+    @GetMapping("/request-reset-password")
+    public ResponseEntity<?> requestResetPassword(@RequestParam("email") String email) {
+        userService.initiatePasswordReset(email);
+        return ResponseEntity.ok("비밀번호 재설정 이메일을 발송했습니다.");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(
+            @RequestParam("token") String token,
+            @RequestParam("newPassword") String newPassword) {
+        boolean isReset = userService.resetPassword(token, newPassword);
+        if (isReset) {
+            return ResponseEntity.ok("비밀번호가 성공적으로 재설정되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호 재설정 요청이 유효하지 않습니다.");
+        }
+    }
+
+
 }

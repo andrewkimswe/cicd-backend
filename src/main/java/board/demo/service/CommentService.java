@@ -3,59 +3,52 @@ package board.demo.service;
 import board.demo.model.Comment;
 import board.demo.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.ArrayList;
 
 @Service
 public class CommentService {
+
     @Autowired
     private CommentRepository commentRepository;
 
-    public Comment createComment(Comment comment, String password) {
-        comment.setPassword(password); // Set password
+    // 댓글 생성
+    public Comment createComment(Comment comment) {
         return commentRepository.save(comment);
     }
 
-    public Optional<Comment> getCommentById(String commentId) {
-        return commentRepository.findById(commentId);
+    // 특정 게시글의 모든 댓글 조회
+    public Page<Comment> getCommentsByPostId(String postId, Pageable pageable) {
+        return commentRepository.findByPostId(postId, pageable);
     }
 
-    public List<Comment> getCommentsByPostId(String postId) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "createdAt"); // 과거 댓글이 먼저 나오도록 정렬
-        return commentRepository.findByPostId(postId, sort);
-    }
+    // 댓글 업데이트
+    public Comment updateComment(String commentId, String content, String password) {
+        Comment existingComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found: " + commentId));
 
-    public Comment updateComment(String commentId, String password, Comment updatedComment) {
-        Optional<Comment> existingComment = getCommentById(commentId);
-        if (existingComment.isPresent()) {
-            Comment comment = existingComment.get();
-            if (!comment.getPassword().equals(password)) {
-                throw new RuntimeException("Incorrect password");
-            }
-            comment.setContent(updatedComment.getContent());
-            return commentRepository.save(comment);
-        } else {
-            throw new RuntimeException("Comment not found with id: " + commentId);
+        if (!existingComment.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid password for comment: " + commentId);
         }
+
+        existingComment.setContent(content);
+        return commentRepository.save(existingComment);
     }
 
 
+
+
+    // 댓글 삭제
     public void deleteComment(String commentId, String password) {
-        Optional<Comment> existingComment = commentRepository.findById(commentId);
-        if (!existingComment.isPresent()) {
-            throw new RuntimeException("Comment not found with id: " + commentId);
+        Comment existingComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+        if (!existingComment.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid password");
         }
-
-        Comment comment = existingComment.get();
-        if (!comment.getPassword().equals(password)) {
-            throw new RuntimeException("Incorrect password");
-        }
-
-        commentRepository.deleteById(commentId);
+        commentRepository.delete(existingComment);
     }
 
-    // 기타 필요한 메서드...
 }

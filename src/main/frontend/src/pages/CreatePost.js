@@ -11,8 +11,10 @@ function CreatePost() {
         title: '',
         content: ''
     });
+    const [image, setImage] = useState(null);
     const [file, setFile] = useState(null); // 파일 상태 추가
     const [errors, setErrors] = useState({});
+    const [userRole, setUserRole] = useState('USER');
     const navigate = useNavigate();
 
     const validateForm = () => {
@@ -49,8 +51,13 @@ function CreatePost() {
             formData.append('type', post.type);
             formData.append('title', post.title);
             formData.append('content', post.content);
+
             if (file) {
                 formData.append('file', file); // 파일 첨부
+            }
+
+            if (image) {
+                formData.append('image', image); // 이미지 첨부
             }
 
             try {
@@ -67,10 +74,6 @@ function CreatePost() {
         }
     };
 
-    // 파일 입력 처리 함수
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
 
     const navigateToBulletinBoard = () => {
         navigate('/posts'); // 게시판으로 이동
@@ -105,6 +108,7 @@ function CreatePost() {
                     {errors.password && <div className="error">{errors.password}</div>}
                 </div>
 
+
                 <div className="form-group">
                     <label>
                         <input
@@ -116,16 +120,19 @@ function CreatePost() {
                         />
                         Regular Post
                     </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="postType"
-                            value="notice"
-                            checked={post.type === 'notice'}
-                            onChange={(e) => setPost({ ...post, type: e.target.value })}
-                        />
-                        Notice
-                    </label>
+                    {/* admin일 경우에만 공지글 옵션을 보여줍니다 */}
+                    {userRole === 'ADMIN' && (
+                        <label>
+                            <input
+                                type="radio"
+                                name="postType"
+                                value="notice"
+                                checked={post.type === 'notice'}
+                                onChange={(e) => setPost({ ...post, type: e.target.value })}
+                            />
+                            Notice
+                        </label>
+                    )}
                 </div>
 
                 <div className="form-group">
@@ -145,6 +152,29 @@ function CreatePost() {
                         onChange={(e) => setPost({ ...post, content: e.target.value })}
                     />
                     {errors.content && <div className="error">{errors.content}</div>}
+                </div>
+                <div className="form-group">
+                    <label htmlFor="image" className="custom-file-upload">
+                        <i className="fa fa-cloud-upload"></i> Upload Image
+                    </label>
+                    <input
+                        type="file"
+                        id="image"
+                        onChange={(e) => setImage(e.target.files[0])}
+                        style={{ display: 'none' }}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="file" className="custom-file-upload">
+                        <i className="fa fa-cloud-upload"></i> Upload File
+                    </label>
+                    <input
+                        type="file"
+                        id="file"
+                        onChange={(e) => setFile(e.target.files[0])}
+                        style={{ display: 'none' }}
+                    />
                 </div>
                 <button type="submit">Submit Post</button>
             </form>

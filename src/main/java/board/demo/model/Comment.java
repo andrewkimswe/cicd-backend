@@ -1,17 +1,19 @@
 package board.demo.model;
 
-import jakarta.persistence.Id;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
-@Document
+@Document(collection = "comment")
 public class Comment {
+
     @Id
     private String id;
     private String postId; // 연결된 Post의 ID
+    private String parentId; // 부모 댓글의 ID
     private String content;
-    private String author; // 댓글 작성자
     private String password; // 댓글 수정/삭제를 위한 비밀번호
 }
-

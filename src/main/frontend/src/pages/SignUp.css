@@ -1,3 +1,4 @@
+/* Signup 컴포넌트의 전반적인 컨테이너 스타일 */
 .signup-container {
     display: flex;
     flex-direction: column;
@@ -7,16 +8,19 @@
     margin: auto;
     padding: 20px;
     border-radius: 8px;
-    background: linear-gradient(135deg, #6e8efb, #a777e3); /* 배경 그라데이션 설정 */
-    color: #FFFFFF; /* 글자 색상 설정 */
-    font-family: 'Helvetica Neue', sans-serif; /* 글꼴 설정 */
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: #FFFFFF;
+    font-family: 'Helvetica Neue', sans-serif;
 }
 
-.signup-container header {
+/* 제목의 스타일링 */
+.signup-container header h2 {
     text-align: center;
     margin-bottom: 20px;
+    font-size: 1.5rem; /* 조정된 제목 글씨 크기 */
 }
 
+/* 폼의 스타일링 */
 .signup-container form {
     display: flex;
     flex-direction: column;
@@ -24,14 +28,17 @@
     width: 100%;
 }
 
+/* 입력 필드 스타일링 */
 .signup-container form input {
     padding: 10px;
     border: 2px solid #FFFFFF;
     border-radius: 4px;
     background-color: transparent;
     color: #FFFFFF;
+    font-size: 1rem; /* 입력 필드 글씨 크기 */
 }
 
+/* 버튼 스타일링 */
 .signup-container form button {
     padding: 10px;
     border: none;
@@ -40,8 +47,10 @@
     color: #6e8efb;
     cursor: pointer;
     font-weight: bold;
+    font-size: 1rem; /* 버튼 글씨 크기 */
 }
 
+/* 버튼 호버 효과 */
 .signup-container form button:hover {
     background-color: #ddd;
 }
