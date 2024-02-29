@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
 import './CreatePost.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,14 +7,12 @@ function CreatePost() {
     const [post, setPost] = useState({
         nickname: '',
         password: '',
-        type: 'regular',
         title: '',
         content: ''
     });
     const [image, setImage] = useState(null);
-    const [file, setFile] = useState(null); // 파일 상태 추가
+    const [file, setFile] = useState(null);
     const [errors, setErrors] = useState({});
-    const [userRole, setUserRole] = useState('USER');
     const navigate = useNavigate();
 
     const validateForm = () => {
@@ -48,25 +46,23 @@ function CreatePost() {
             const formData = new FormData();
             formData.append('nickname', post.nickname);
             formData.append('password', post.password);
-            formData.append('type', post.type);
             formData.append('title', post.title);
             formData.append('content', post.content);
 
             if (file) {
-                formData.append('file', file); // 파일 첨부
+                formData.append('file', file);
             }
 
             if (image) {
-                formData.append('image', image); // 이미지 첨부
+                formData.append('image', image);
             }
 
             try {
-                const response = await axios.post('http://localhost:8080/api/posts', formData, {
+                await axios.post('http://localhost:8080/api/posts', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                console.log(response.data);
                 navigate('/posts');
             } catch (err) {
                 console.error('Error creating post:', err);
@@ -74,107 +70,43 @@ function CreatePost() {
         }
     };
 
-
-    const navigateToBulletinBoard = () => {
-        navigate('/posts'); // 게시판으로 이동
-    };
-
-
     return (
         <div className="create-post-container">
             <div className="button-container">
-                <button onClick={navigateToBulletinBoard}>Back to Bulletin Board</button>
+                <button onClick={() => navigate('/posts')}>Back to Bulletin Board</button>
             </div>
             <h1>Create New Post</h1>
             <form onSubmit={handleSubmit}>
+                {/* Form groups for input fields */}
                 <div className="form-group">
-                    <input
-                        type="text"
-                        placeholder="Nickname"
-                        value={post.nickname}
-                        onChange={(e) => setPost({ ...post, nickname: e.target.value })}
-                    />
+                    <input type="text" placeholder="Nickname" value={post.nickname} onChange={(e) => setPost({ ...post, nickname: e.target.value })} />
                     {errors.nickname && <div className="error">{errors.nickname}</div>}
                 </div>
 
                 <div className="form-group">
-                    <input
-                        type="password"
-                        placeholder="Password (4 digits)"
-                        maxLength="4"
-                        value={post.password}
-                        onChange={(e) => setPost({ ...post, password: e.target.value })}
-                    />
+                    <input type="password" placeholder="Password (4 digits)" maxLength="4" value={post.password} onChange={(e) => setPost({ ...post, password: e.target.value })} />
                     {errors.password && <div className="error">{errors.password}</div>}
                 </div>
 
-
                 <div className="form-group">
-                    <label>
-                        <input
-                            type="radio"
-                            name="postType"
-                            value="regular"
-                            checked={post.type === 'regular'}
-                            onChange={(e) => setPost({ ...post, type: e.target.value })}
-                        />
-                        Regular Post
-                    </label>
-                    {/* admin일 경우에만 공지글 옵션을 보여줍니다 */}
-                    {userRole === 'ADMIN' && (
-                        <label>
-                            <input
-                                type="radio"
-                                name="postType"
-                                value="notice"
-                                checked={post.type === 'notice'}
-                                onChange={(e) => setPost({ ...post, type: e.target.value })}
-                            />
-                            Notice
-                        </label>
-                    )}
-                </div>
-
-                <div className="form-group">
-                    <input
-                        type="text"
-                        placeholder="Title"
-                        value={post.title}
-                        onChange={(e) => setPost({ ...post, title: e.target.value })}
-                    />
+                    <input type="text" placeholder="Title" value={post.title} onChange={(e) => setPost({ ...post, title: e.target.value })} />
                     {errors.title && <div className="error">{errors.title}</div>}
                 </div>
 
                 <div className="form-group">
-                    <textarea
-                        placeholder="Content"
-                        value={post.content}
-                        onChange={(e) => setPost({ ...post, content: e.target.value })}
-                    />
+                    <textarea placeholder="Content" value={post.content} onChange={(e) => setPost({ ...post, content: e.target.value })} />
                     {errors.content && <div className="error">{errors.content}</div>}
                 </div>
+
+                {/* File and image upload sections */}
                 <div className="form-group">
-                    <label htmlFor="image" className="custom-file-upload">
-                        <i className="fa fa-cloud-upload"></i> Upload Image
-                    </label>
-                    <input
-                        type="file"
-                        id="image"
-                        onChange={(e) => setImage(e.target.files[0])}
-                        style={{ display: 'none' }}
-                    />
+                    <label htmlFor="image" className="custom-file-upload">Upload Image</label>
+                    <input type="file" id="image" onChange={(e) => setImage(e.target.files[0])} style={{ display: 'none' }} />
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="file" className="custom-file-upload">
-                        <i className="fa fa-cloud-upload"></i> Upload File
-                    </label>
-                    <input
-                        type="file"
-                        id="file"
-                        onChange={(e) => setFile(e.target.files[0])}
-                        style={{ display: 'none' }}
-                    />
+                    <label htmlFor="file" className="custom-file-upload">Upload File</label>
+                    <input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} style={{ display: 'none' }} />
                 </div>
                 <button type="submit">Submit Post</button>
             </form>

@@ -1,0 +1,98 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 50000
+          starttls:
+            enable: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+              - openid
+          facebook:
+            clientId: ${FACEBOOK_CLIENT_ID}
+            clientSecret: ${FACEBOOK_CLIENT_SECRET}
+            scope:
+              - email
+              - public_profile
+          naver:
+            clientId: ${NAVER_CLIENT_ID}
+            clientSecret: ${NAVER_CLIENT_SECRET}
+            clientAuthenticationMethod: post
+            authorizationGrantType: authorization_code
+            redirectUri: "${APP_BASE_URL}/callback/naver"
+            scope:
+              - nickname
+              - email
+              - profile_image
+            clientName: Naver
+          kakao:
+            clientId: ${KAKAO_CLIENT_ID}
+            clientSecret: ${KAKAO_CLIENT_SECRET}
+            clientAuthenticationMethod: client_secret_post
+            authorizationGrantType: authorization_code
+            redirectUri: "${APP_BASE_URL}/callback/kakao"
+            scope: profile_nickname, profile_image, account_email
+            clientName: Kakao
+        provider:
+          google:
+            token-uri: https://oauth2.googleapis.com/token
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            user-info-uri: https://www.googleapis.com/oauth2/v1/userinfo
+            jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+          naver:
+            authorizationUri: https://nid.naver.com/oauth2.0/authorize
+            tokenUri: https://nid.naver.com/oauth2.0/token
+            userInfoUri: https://openapi.naver.com/v1/nid/me
+            userNameAttribute: response
+          kakao:
+            authorizationUri: https://kauth.kakao.com/oauth/authorize
+            tokenUri: https://kauth.kakao.com/oauth/token
+            userInfoUri: https://kapi.kakao.com/v2/user/me
+            userNameAttribute: id
+
+server:
+  port: 8080
+
+jwt:
+  expiration: 3600000
+  secret: ${JWT_SECRET}
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
+      hibernate: DEBUG
+
+app:
+  baseUrl: ${APP_BASE_URL}
