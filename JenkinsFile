@@ -1,0 +1,109 @@
+pipeline {
+    agent any
+    environment {
+        // 환경 변수로 중요 정보를 관리
+        DB_URL = 'mysql-uri'
+        DB_USERNAME = 'mysql-username'
+        DB_PASSWORD = credentials('mysql-password') // Jenkins credential ID for database password
+
+        MONGODB_URI = 'mongodb-uri'
+
+        MAIL_HOST = 'smtp.gmail.com'
+        MAIL_PORT = '587'
+        MAIL_USERNAME = 'your-email@gmail.com'
+        MAIL_PASSWORD = credentials('mail-password-id') // Jenkins credential ID for mail password
+
+        GOOGLE_CLIENT_ID = 'your-google-client-id'
+        GOOGLE_CLIENT_SECRET = credentials('google-client-secret-id') // Jenkins credential ID for Google client secret
+
+        JWT_SECRET = credentials('jwt-secret-id') // Jenkins credential ID for JWT secret
+
+        APP_BASE_URL = 'application.url'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'your-git-credentials-id', url: 'your-git-repository-url'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    def myApp = docker.build("your-app-name:${env.BUILD_NUMBER}")
+                    docker.withRegistry('https://your-docker-registry', 'your-docker-credentials') {
+                        myApp.push()
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+pipeline {
+    agent any
+    environment {
+        // Database credentials
+        DB_URL = 'mysql-uri'
+        DB_USERNAME = 'mysql-username'
+        DB_PASSWORD = credentials('mysql-password') // Jenkins credential ID for database password
+
+        // MongoDB URI
+        MONGODB_URI = 'mongodb-uri'
+
+        // Mail server credentials
+        MAIL_HOST = 'smtp.gmail.com'
+        MAIL_PORT = '587'
+        MAIL_USERNAME = 'andrewkimswe@gmail.com'
+        MAIL_PASSWORD = credentials('mail-password-id') // Jenkins credential ID for mail password
+
+        // OAuth2 client secrets
+        GOOGLE_CLIENT_ID = '216085716340-ep8bbvpviq346n7iornnj6posmoktu9g.apps.googleusercontent.com'
+        GOOGLE_CLIENT_SECRET = credentials('google-client-secret-id') // Jenkins credential ID for Google client secret
+
+        // JWT Secret
+        JWT_SECRET = credentials('jwt-secret-id') // Jenkins credential ID for JWT secret
+
+        // Application base URL
+        APP_BASE_URL = 'application.uri'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'andrewkimswe', url: 'https://github.com/andrewkimswe/project-202'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    def myImage = docker.build("project-202/myapp:${env.BUILD_NUMBER}")
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        myImage.push()
+                    }
+                }
+            }
+        }
+    }
+}

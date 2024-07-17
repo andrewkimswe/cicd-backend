@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+    environment {
+        // Database credentials
+        DB_URL = 'mysql-uri'
+        DB_USERNAME = 'mysql-username'
+        DB_PASSWORD = credentials('mysql-password') // Jenkins credential ID for database password
+
+        // MongoDB URI
+        MONGODB_URI = 'mongodb-uri'
+
+        // Mail server credentials
+        MAIL_HOST = 'smtp.gmail.com'
+        MAIL_PORT = '587'
+        MAIL_USERNAME = 'mail-username' // 환경 변수로 대체
+        MAIL_PASSWORD = credentials('mail-password-id') // Jenkins credential ID for mail password
+
+        // OAuth2 client secrets
+        GOOGLE_CLIENT_ID = 'your-google-client-id'
+        GOOGLE_CLIENT_SECRET = credentials('google-client-secret-id') // Jenkins credential ID for Google client secret
+
+        // JWT Secret
+        JWT_SECRET = credentials('jwt-secret-id') // Jenkins credential ID for JWT secret
+
+        // Application base URL
+        APP_BASE_URL = 'application.url'
+
+        // DockerHub credentials
+        DOCKERHUB_USERNAME = credentials('dockerhub-username') // DockerHub 사용자 이름
+        DOCKERHUB_CREDENTIALS_ID = 'docker-hub-credentials' // DockerHub 자격 증명 ID
+
+        // Kubernetes deployment details
+        K8S_DEPLOYMENT_NAME = 'your-backend-deployment' // Kubernetes 배포 이름
+        K8S_CONTAINER_NAME = 'your-backend-container' // Kubernetes 컨테이너 이름
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'your-git-credentials-id', url: 'https://github.com/your-username/project_202.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                dir('src/main') {
+                    sh './gradlew clean build'
+                }
+            }
+        }
+        stage('Docker Build and Push') {
+            steps {
+                script {
+                    def myApp = docker.build("${env.DOCKERHUB_USERNAME}/backend-app:${env.BUILD_NUMBER}", ".")
+                    docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKERHUB_CREDENTIALS_ID}") {
+                        myApp.push()
+                        myApp.push('latest')
+                    }
+                }
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    sh "kubectl set image deployment/${env.K8S_DEPLOYMENT_NAME} ${env.K8S_CONTAINER_NAME}=${env.DOCKERHUB_USERNAME}/backend-app:${env.BUILD_NUMBER}"
+                    sh "kubectl rollout status deployment/${env.K8S_DEPLOYMENT_NAME}"
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            script {
+                sh "kubectl rollout undo deployment/${env.K8S_DEPLOYMENT_NAME}"
+            }
+        }
+    }
+}
