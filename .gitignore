@@ -1,4 +1,7 @@
+### HELP.md ###
 HELP.md
+
+### Gradle ###
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -35,3 +38,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Exclude Frontend Directory ###
+src/main/frontend/
